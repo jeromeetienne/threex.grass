@@ -11,9 +11,12 @@ It is loosely based on
 
 Show Don't Tell
 ===============
+* [examples/demo.html](http://jeromeetienne.github.io/threex.grass/examples/demo.html)
+\[[view source](https://github.com/jeromeetienne/threex.grass/blob/master/examples/demo.html)\] :
+It shows a demo of how to use this game extension
 * [examples/basic.html](http://jeromeetienne.github.io/threex.grass/examples/basic.html)
 \[[view source](https://github.com/jeromeetienne/threex.grass/blob/master/examples/basic.html)\] :
-It shows 3 basic characters
+It shows the most basic usage.
 
 How To Install It
 =================
@@ -64,4 +67,7 @@ References and Credits
 
 ## TODO
 * make a demo with minecraft walking in it, with daynight cycle and later swarm
-
+* make a version which use THREE.ParticlesSystem. it is fast and may work well when the grass is far.
+  * CON: use gl-pointsize so very limited size on screen
+  * CON: particle arent lite
+  * PRO: likely faster
