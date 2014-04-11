@@ -36,7 +36,7 @@ THREEx.createGrassTufts	= function(positions){
 			THREE.GeometryUtils.merge( mergedGeo, object3d );
 
 			// the other side of the plane
-			// - impossible to use side : THREE.BothSide as it would mess up the normals
+			// - impossible to use ```side : THREE.BothSide``` as it would mess up the normals
 			var object3d	= new THREE.Mesh(geometry, material)
 			object3d.rotateY(angle+Math.PI)
 			object3d.position.copy(position)
