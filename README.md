@@ -62,12 +62,13 @@ References and Credits
 * thanks a lot to [bai](http://baicoianu.com/) on irc for the textures and the helps during the tunning
 * ["Rendering Grass in Real Time with Dynamic Lighting"](http://www.kevinboulanger.net/grass.html)
 * ["Rendering Countless Blades of Waving Grass" GPUGem](http://http.developer.nvidia.com/GPUGems/gpugems_ch07.html)
-* ["Procedural grass rendering"](http://outerra.blogspot.fr/2012/05/procedural-grass-rendering.html]
-* ["Airborn – Trees" post](http://simonschreibt.de/gat/airborn-trees/] for normal tweaking
+* ["Procedural grass rendering"](http://outerra.blogspot.fr/2012/05/procedural-grass-rendering.html)
+* ["Airborn – Trees" post](http://simonschreibt.de/gat/airborn-trees/) for normal tweaking
 
 ## TODO
 * make a demo with minecraft walking in it, with daynight cycle and later swarm
 * make a version which use THREE.ParticlesSystem. it is fast and may work well when the grass is far.
   * CON: use gl-pointsize so very limited size on screen
-  * CON: particle arent lite
+  * CON: particle arent lite. one could set a color per particle to simulate ligthing.
+    if middle of the day, use white. if the night, use grey. something like that
   * PRO: likely faster
