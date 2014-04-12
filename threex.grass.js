@@ -4,19 +4,16 @@ THREEx.createGrassTufts	= function(positions){
 	// create the initial geometry
 	var geometry	= new THREE.PlaneGeometry(0.4, 0.2)
 	geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, geometry.height/2, 0 ) );
-	// geometry.computeVertexNormals();
 
-	// normals from http://http.developer.nvidia.com/GPUGems/gpugems_ch07.html
+
+	// Tweat the normal for better lighting
+	// - normals from http://http.developer.nvidia.com/GPUGems/gpugems_ch07.html
 	// - normals inspired from http://simonschreibt.de/gat/airborn-trees/
 	geometry.faces.forEach(function(face){
 		face.vertexNormals.forEach(function(normal){
 			normal.set(0.0,1.0,0.0).normalize()
 		})
 	})
-	// geometry.faces[0].vertexNormals[0].set(0.0,1.0,0.0).normalize()
-	// geometry.faces[0].vertexNormals[1].set(0.0,1.0,0.0).normalize()
-	// geometry.faces[0].vertexNormals[2].set(0.0,1.0,0.0).normalize()
-	// geometry.faces[0].vertexNormals[3].set(0.0,1.0,0.0).normalize()
 	
 	// create each tuft and merge their geometry for performance
 	var mergedGeo	= new THREE.Geometry();
@@ -47,10 +44,6 @@ THREEx.createGrassTufts	= function(positions){
 
 	// load the texture
 	var textureUrl	= THREEx.createGrassTufts.baseUrl+'images/grass01.png'
-	// var textureUrl	= THREEx.createGrassTufts.baseUrl+'images/bai_large/grass01.png'
-	// var textureUrl	= THREEx.createGrassTufts.baseUrl+'images/bai_large/grass02.png'
-	// var textureUrl	= THREEx.createGrassTufts.baseUrl+'images/bai_large/flowers01.png'
-	// var textureUrl	= THREEx.createGrassTufts.baseUrl+'images/bai_large/flowers02.png'
 	var texture	= THREE.ImageUtils.loadTexture(textureUrl)
 	// build the material
 	var material	= new THREE.MeshPhongMaterial({
@@ -58,7 +51,6 @@ THREEx.createGrassTufts	= function(positions){
 		color		: 'grey',
 		emissive	: 'darkgreen',
 		alphaTest	: 0.7,
-		// side		: THREE.DoubleSide,
 	})
 	// create the mesh
 	var mesh	= new THREE.Mesh(mergedGeo, material)
