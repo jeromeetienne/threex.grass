@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<script src='vendor/three.js/build/three-min.js'></script>
+<script src='vendor/three.js/build/three.min.js'></script>
 <script src='../threex.grass.js'></script>
-<body style='margin: 0px; background-color: lightblue; overflow: hidden;'><script>
+<body style='margin: 0px; overflow: hidden;'><script>
 	var renderer	= new THREE.WebGLRenderer({
 		antialias	: true
 	});
 	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.setClearColor( 'lightblue', 1 );
 	document.body.appendChild( renderer.domElement );
 
 	var onRenderFcts= [];

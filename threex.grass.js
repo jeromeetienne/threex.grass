@@ -6,18 +6,17 @@ THREEx.createGrassTufts	= function(positions){
 	geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, geometry.height/2, 0 ) );
 	// geometry.computeVertexNormals();
 
-	// change the normal to get better lighting
-	// - normals inspired from http://simonschreibt.de/gat/airborn-trees/
-	// geometry.faces[0].vertexNormals[0].set(-0.2,1.0,4.0).normalize()
-	// geometry.faces[0].vertexNormals[1].set(-0.2,0.5,4.0).normalize()
-	// geometry.faces[0].vertexNormals[2].set(+0.2,0.5,4.0).normalize()
-	// geometry.faces[0].vertexNormals[3].set(+0.2,1.0,4.0).normalize()
-
 	// normals from http://http.developer.nvidia.com/GPUGems/gpugems_ch07.html
-	geometry.faces[0].vertexNormals[0].set(0.0,1.0,0.0).normalize()
-	geometry.faces[0].vertexNormals[1].set(0.0,1.0,0.0).normalize()
-	geometry.faces[0].vertexNormals[2].set(0.0,1.0,0.0).normalize()
-	geometry.faces[0].vertexNormals[3].set(0.0,1.0,0.0).normalize()
+	// - normals inspired from http://simonschreibt.de/gat/airborn-trees/
+	geometry.faces.forEach(function(face){
+		face.vertexNormals.forEach(function(normal){
+			normal.set(0.0,1.0,0.0).normalize()
+		})
+	})
+	// geometry.faces[0].vertexNormals[0].set(0.0,1.0,0.0).normalize()
+	// geometry.faces[0].vertexNormals[1].set(0.0,1.0,0.0).normalize()
+	// geometry.faces[0].vertexNormals[2].set(0.0,1.0,0.0).normalize()
+	// geometry.faces[0].vertexNormals[3].set(0.0,1.0,0.0).normalize()
 	
 	// create each tuft and merge their geometry for performance
 	var mergedGeo	= new THREE.Geometry();
