@@ -3,7 +3,7 @@ var THREEx	= THREEx	|| {}
 THREEx.createGrassTufts	= function(positions){
 	// create the initial geometry
 	var geometry	= new THREE.PlaneGeometry(0.4, 0.2)
-	geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, geometry.height/2, 0 ) );
+	geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, geometry.parameters.height/2, 0 ) );
 
 
 	// Tweat the normal for better lighting
@@ -29,7 +29,8 @@ THREEx.createGrassTufts	= function(positions){
 			var object3d	= new THREE.Mesh(geometry, material)
 			object3d.rotateY(angle)
 			object3d.position.copy(position)
-			THREE.GeometryUtils.merge( mergedGeo, object3d );
+			object3d.updateMatrix();
+			mergedGeo.merge( object3d.geometry, object3d.matrix );
 
 			// The other side of the plane
 			// - impossible to use ```side : THREE.BothSide``` as 
@@ -37,7 +38,8 @@ THREEx.createGrassTufts	= function(positions){
 			var object3d	= new THREE.Mesh(geometry, material)
 			object3d.rotateY(angle+Math.PI)
 			object3d.position.copy(position)
-			THREE.GeometryUtils.merge( mergedGeo, object3d );
+			object3d.updateMatrix();
+			mergedGeo.merge( object3d.geometry, object3d.matrix );
 		}
 	}
 
