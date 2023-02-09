@@ -1,8 +1,7 @@
-
+Forked From https://github.com/jeromeetienne/threex.grass
 
 TODOs (For my fork)
 1.  Update to latest THREE and that stuff.
-Forked From https://github.com/jeromeetienne/threex.grass
 
 threex.grass
 ===================
