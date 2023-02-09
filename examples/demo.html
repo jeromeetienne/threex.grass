@@ -5,11 +5,13 @@
     <link rel="shortcut icon" href="favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <script src='vendor/three.js/build/three.min.js'></script>
+<!--    <script src='vendor/three.js/build/three.min.js'></script>-->
+    <script src="three.min.100.js"></script>
     <script src='../threex.grass.js'></script>
 </head>
 <body style='margin: 0px; overflow: hidden;'>
     <script>
+        let textureLoader = new THREE.TextureLoader();
         var renderer = new THREE.WebGLRenderer({
             antialias: true
         });
@@ -59,12 +61,12 @@
         //////////////////////////////////////////////////////////////////////////////////
 
         var textureUrl = 'images/grasslight-small.jpg';
-        var texture = THREE.ImageUtils.loadTexture(textureUrl);
+        var texture = textureLoader.load(textureUrl);
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.x = 10;
         texture.repeat.y = 10;
-        texture.anisotropy = renderer.getMaxAnisotropy();
+        texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
         // build object3d
         var geometry = new THREE.PlaneGeometry(20, 20);
@@ -83,7 +85,7 @@
         //		comment								//
         //////////////////////////////////////////////////////////////////////////////////
 
-        var nTufts = 5000;
+        var nTufts = 500;
         var positions = new Array(nTufts);
         for (var i = 0; i < nTufts; i++) {
             var position = new THREE.Vector3();
@@ -91,13 +93,13 @@
             position.z = (Math.random() - 0.5) * 20;
             positions[i] = position;
         }
-        var mesh = THREEx.createGrassTufts(positions);
+        var mesh = THREEx.createGrassTufts(positions, scene);
         scene.add(mesh);
 
         // load the texture
         var textureUrl = THREEx.createGrassTufts.baseUrl + 'images/grass01.png';
         var material = mesh.material;
-        material.map = THREE.ImageUtils.loadTexture(textureUrl);
+        material.map = textureLoader.load(textureUrl);
         material.alphaTest = 0.7;
 
         //////////////////////////////////////////////////////////////////////////////////
@@ -113,13 +115,13 @@
             position.z = (Math.random() - 0.5) * 20;
             positions[i] = position;
         }
-        var mesh = THREEx.createGrassTufts(positions);
+        var mesh = THREEx.createGrassTufts(positions, scene);
         scene.add(mesh);
 
         // load the texture
         var textureUrl = THREEx.createGrassTufts.baseUrl + 'images/grass02.png';
         var material = mesh.material;
-        material.map = THREE.ImageUtils.loadTexture(textureUrl);
+        material.map = textureLoader.load(textureUrl);
         material.alphaTest = 0.7;
 
         //////////////////////////////////////////////////////////////////////////////////
@@ -133,13 +135,13 @@
             position.z = (Math.random() - 0.5) * 20;
             positions[i] = position;
         }
-        var mesh = THREEx.createGrassTufts(positions);
+        var mesh = THREEx.createGrassTufts(positions, scene);
         scene.add(mesh);
 
         // load the texture
         var material = mesh.material;
         var textureUrl = THREEx.createGrassTufts.baseUrl + 'images/flowers01.png';
-        material.map = THREE.ImageUtils.loadTexture(textureUrl);
+        material.map = textureLoader.load(textureUrl);
         material.emissive.set(0x888888);
         material.alphaTest = 0.7;
 
@@ -154,13 +156,13 @@
             position.z = (Math.random() - 0.5) * 20;
             positions[i] = position;
         }
-        var mesh = THREEx.createGrassTufts(positions);
+        var mesh = THREEx.createGrassTufts(positions, scene);
         scene.add(mesh);
 
         // load the texture
         var material = mesh.material;
         var textureUrl = THREEx.createGrassTufts.baseUrl + 'images/flowers02.png';
-        material.map = THREE.ImageUtils.loadTexture(textureUrl);
+        material.map = textureLoader.load(textureUrl);
         material.emissive.set(0x888888);
         material.alphaTest = 0.7;
 
@@ -176,6 +178,7 @@
         onRenderFcts.push(function (delta, now) {
             camera.position.x += (mouse.x * 2 - camera.position.x) * (delta * 3);
             camera.position.y += (mouse.y * 2 - camera.position.y) * (delta * 3);
+            camera.position.y += 0.05
             camera.lookAt(scene.position);
         });
 

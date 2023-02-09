@@ -13,11 +13,12 @@
         }
     </style>
 
-    <script src='vendor/three.js/build/three.min.js'></script>
+    <script src="three.min.148.js"></script>
     <script src='../threex.grass.js'></script>
 </head>
 <body>
     <script>
+        let textureLoader = new THREE.TextureLoader();
         var renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
@@ -66,7 +67,7 @@
         // load the texture
         var textureUrl = THREEx.createGrassTufts.baseUrl + 'images/grass01.png';
         var material = mesh.material;
-        material.map = THREE.ImageUtils.loadTexture(textureUrl);
+        material.map = textureLoader.load(textureUrl);
         material.alphaTest = 0.7;
 
         //////////////////////////////////////////////////////////////////////////////////
