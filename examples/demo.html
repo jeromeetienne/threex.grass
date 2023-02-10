@@ -5,63 +5,81 @@
     <link rel="shortcut icon" href="favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<!--    <script src='vendor/three.js/build/three.min.js'></script>-->
-    <script src="three.min.100.js"></script>
+    <script src="three.min.120.js"></script>
+    <script src="Constants.js"></script>
+    <script src="PlayerKeyControls.js"></script>
     <script src='../threex.grass.js'></script>
+
+    <style>
+        html, body {
+            margin: 0px;
+            overflow: hidden;
+            height: 100%;
+        }
+    </style>
 </head>
-<body style='margin: 0px; overflow: hidden;'>
+<body>
+
+
     <script>
         let textureLoader = new THREE.TextureLoader();
-        var renderer = new THREE.WebGLRenderer({
+        let renderer = new THREE.WebGLRenderer({
             antialias: true
         });
+
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor('lightblue', 1);
+        renderer.setClearColor('skyblue', 1);
+
         document.body.appendChild(renderer.domElement);
 
-        var onRenderFcts = [];
-        var scene = new THREE.Scene();
-        var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000);
+        let scene = new THREE.Scene();
+        let camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000);
+        camera.position.y = 0.5;
         camera.position.z = 1;
+        let CONSTANTS = new SceneConstants(THREE);
+        let PLAYER_KEY_CONTROLS = new PlayerKeyControls(camera, CONSTANTS, document, THREE);
 
 
         //////////////////////////////////////////////////////////////////////////////////
         //		set 3 point lighting						//
         //////////////////////////////////////////////////////////////////////////////////
 
-        ;
         (function () {
             // add a ambient light
-            var light = new THREE.AmbientLight(0x020202);
+            let light = new THREE.AmbientLight(0x020202);
             scene.add(light);
+
             // add a light in front
-            var light = new THREE.DirectionalLight('white', 1);
-            light.position.set(0.5, 0.5, 2);
-            scene.add(light);
+            let light2 = new THREE.DirectionalLight('white', 1);
+            light2.position.set(0.5, 0.5, 2);
+            scene.add(light2);
+
             // add a light behind
-            var light = new THREE.DirectionalLight('white', 0.75);
-            light.position.set(-0.5, -0.5, -2);
-            scene.add(light);
+            let light3 = new THREE.DirectionalLight('white', 0.75);
+            light3.position.set(-0.5, -0.5, -2);
+            scene.add(light3);
         })();
 
-        // add a light behind
-        var light = new THREE.DirectionalLight('white', 1);
-        // var light	= new THREE.PointLight('white', 2)
-        scene.add(light);
-        light.position.y = 1;
-        onRenderFcts.push(function (delta, now) {
-            var angle = now * Math.PI * 2 * 0.2;
-            light.position.x = Math.cos(angle) * 3;
-            light.position.y = Math.sin(angle) * 3;
-            // light.position.z= Math.sin(angle)*3
-        })
+        // add a changing light
+        let rovingLight = new THREE.DirectionalLight('white', 1);
+        //let rovingLight = new THREE.PointLight('white', 2)
+        scene.add(rovingLight);
+
+        rovingLight.position.y = 1;
+
+        function updateRovingLights(now) {
+            let angle = now * Math.PI * 2 * 0.2;
+            rovingLight.position.x = Math.cos(angle) * 3;
+            rovingLight.position.y = Math.sin(angle) * 3;
+            rovingLight.position.z = Math.sin(angle) * 3;
+        }
 
         //////////////////////////////////////////////////////////////////////////////////
         //		grass ground							//
         //////////////////////////////////////////////////////////////////////////////////
 
-        var textureUrl = 'images/grasslight-small.jpg';
-        var texture = textureLoader.load(textureUrl);
+        let textureUrl = 'images/grasslight-small.jpg';
+        let texture = textureLoader.load(textureUrl);
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.x = 10;
@@ -69,142 +87,112 @@
         texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
         // build object3d
-        var geometry = new THREE.PlaneGeometry(20, 20);
+        let geometry = new THREE.PlaneGeometry(20, 20);
 
-        var material = new THREE.MeshPhongMaterial({
+        let material = new THREE.MeshPhongMaterial({
             map: texture,
             emissive: 'green'
         });
 
-        var object3d = new THREE.Mesh(geometry, material);
-        object3d.rotateX(-Math.PI / 2);
-        scene.add(object3d);
+        let groundObject = new THREE.Mesh(geometry, material);
+        groundObject.rotateX(-Math.PI / 2);
+        scene.add(groundObject);
 
 
-        //////////////////////////////////////////////////////////////////////////////////
-        //		comment								//
-        //////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////
+        // START GROWING THINGS	//
+        //////////////////////////
 
-        var nTufts = 500;
-        var positions = new Array(nTufts);
-        for (var i = 0; i < nTufts; i++) {
-            var position = new THREE.Vector3();
+        // GRASS TYPE 1
+
+        let nTufts = 500;
+        let positions = new Array(nTufts);
+        for (let i = 0; i < nTufts; i++) {
+            let position = new THREE.Vector3();
             position.x = (Math.random() - 0.5) * 20;
             position.z = (Math.random() - 0.5) * 20;
             positions[i] = position;
         }
-        var mesh = THREEx.createGrassTufts(positions, scene);
-        scene.add(mesh);
 
-        // load the texture
-        var textureUrl = THREEx.createGrassTufts.baseUrl + 'images/grass01.png';
-        var material = mesh.material;
-        material.map = textureLoader.load(textureUrl);
-        material.alphaTest = 0.7;
+        textureUrl = THREEx.baseUrl + 'images/grass01.png';
+        texture = textureLoader.load(textureUrl);
+        let alphaTest = 0.7;
+        let emissive = 'darkgreen';
+        let mesh = THREEx.createGrassTufts(positions, scene, texture, alphaTest, emissive);
 
-        //////////////////////////////////////////////////////////////////////////////////
-        //		comment								//
-        //////////////////////////////////////////////////////////////////////////////////
+        // GRASS TYPE 2
 
-
-        var nTufts = 5000;
-        var positions = new Array(nTufts);
-        for (var i = 0; i < nTufts; i++) {
-            var position = new THREE.Vector3();
+        nTufts = 5000;
+        positions = new Array(nTufts);
+        for (let i = 0; i < nTufts; i++) {
+            let position = new THREE.Vector3();
             position.x = (Math.random() - 0.5) * 20;
             position.z = (Math.random() - 0.5) * 20;
             positions[i] = position;
         }
-        var mesh = THREEx.createGrassTufts(positions, scene);
-        scene.add(mesh);
 
-        // load the texture
-        var textureUrl = THREEx.createGrassTufts.baseUrl + 'images/grass02.png';
-        var material = mesh.material;
-        material.map = textureLoader.load(textureUrl);
-        material.alphaTest = 0.7;
+        textureUrl = THREEx.baseUrl + 'images/grass02.png';
+        texture = textureLoader.load(textureUrl);
+        alphaTest = 0.7;
+        emissive = 'darkgreen';
+        mesh = THREEx.createGrassTufts(positions, scene, texture, alphaTest, emissive);
 
-        //////////////////////////////////////////////////////////////////////////////////
-        //		comment								//
-        //////////////////////////////////////////////////////////////////////////////////
-        var nTufts = 100;
-        var positions = new Array(nTufts);
-        for (var i = 0; i < nTufts; i++) {
-            var position = new THREE.Vector3();
+        // FLOWERS TYPE 1
+
+        nTufts = 100;
+        positions = new Array(nTufts);
+        for (let i = 0; i < nTufts; i++) {
+            let position = new THREE.Vector3();
             position.x = (Math.random() - 0.5) * 20;
             position.z = (Math.random() - 0.5) * 20;
             positions[i] = position;
         }
-        var mesh = THREEx.createGrassTufts(positions, scene);
-        scene.add(mesh);
 
-        // load the texture
-        var material = mesh.material;
-        var textureUrl = THREEx.createGrassTufts.baseUrl + 'images/flowers01.png';
-        material.map = textureLoader.load(textureUrl);
-        material.emissive.set(0x888888);
-        material.alphaTest = 0.7;
+        textureUrl = THREEx.baseUrl + 'images/flowers01.png';
+        texture = textureLoader.load(textureUrl);
+        alphaTest = 0.7;
+        emissive = 0x777777;
+        mesh = THREEx.createGrassTufts(positions, scene, texture, alphaTest, emissive);
 
-        //////////////////////////////////////////////////////////////////////////////////
-        //		comment								//
-        //////////////////////////////////////////////////////////////////////////////////
-        var nTufts = 100;
-        var positions = new Array(nTufts);
-        for (var i = 0; i < nTufts; i++) {
-            var position = new THREE.Vector3();
+        // FLOWERS TYPE 2
+        nTufts = 100;
+        positions = new Array(nTufts);
+        for (let i = 0; i < nTufts; i++) {
+            let position = new THREE.Vector3();
             position.x = (Math.random() - 0.5) * 20;
             position.z = (Math.random() - 0.5) * 20;
             positions[i] = position;
         }
-        var mesh = THREEx.createGrassTufts(positions, scene);
-        scene.add(mesh);
 
-        // load the texture
-        var material = mesh.material;
-        var textureUrl = THREEx.createGrassTufts.baseUrl + 'images/flowers02.png';
-        material.map = textureLoader.load(textureUrl);
-        material.emissive.set(0x888888);
-        material.alphaTest = 0.7;
+        textureUrl = THREEx.baseUrl + 'images/flowers02.png';
+        texture = textureLoader.load(textureUrl);
+        alphaTest = 0.7;
+        emissive = '#888888';
+        mesh = THREEx.createGrassTufts(positions, scene, texture, alphaTest, emissive);
 
+        // Camera Controls
+        function updateCameraPosition() {
+            PLAYER_KEY_CONTROLS.updatePlayerPosition();
+        }
 
-        //////////////////////////////////////////////////////////////////////////////////
-        //		Camera Controls							//
-        //////////////////////////////////////////////////////////////////////////////////
-        var mouse = {x: 0, y: 0};
-        document.addEventListener('mousemove', function (event) {
-            mouse.x = (event.clientX / window.innerWidth) - 0.5;
-            mouse.y = (event.clientY / window.innerHeight) - 0.5;
-        }, false);
-        onRenderFcts.push(function (delta, now) {
-            camera.position.x += (mouse.x * 2 - camera.position.x) * (delta * 3);
-            camera.position.y += (mouse.y * 2 - camera.position.y) * (delta * 3);
-            camera.position.y += 0.05
-            camera.lookAt(scene.position);
-        });
-
-
-        //////////////////////////////////////////////////////////////////////////////////
-        //		render the scene						//
-        //////////////////////////////////////////////////////////////////////////////////
-        onRenderFcts.push(function () {
+        // render the scene
+        function renderFrame() {
             renderer.render(scene, camera);
-        });
+        }
 
-        //////////////////////////////////////////////////////////////////////////////////
-        //		loop runner							//
-        //////////////////////////////////////////////////////////////////////////////////
-        var lastTimeMsec = null;
+        // loop runner
+        let lastTimeMsec = null;
+
         requestAnimationFrame(function animate(nowMsec) {
+
             // keep looping
             requestAnimationFrame(animate);
-            // measure time
-            lastTimeMsec = lastTimeMsec || nowMsec - 1000 / 60;
-            var deltaMsec = Math.min(200, nowMsec - lastTimeMsec);
-            lastTimeMsec = nowMsec;
+
             // call each update function
-            onRenderFcts.forEach(function (onRenderFct) {
-                onRenderFct(deltaMsec / 1000, nowMsec / 1000);
-            });
+            updateRovingLights(nowMsec / 1000);
+            updateCameraPosition();
+            renderFrame();
+
         });
     </script>
 </body>

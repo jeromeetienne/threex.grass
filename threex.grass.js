@@ -2,7 +2,9 @@
 
 var THREEx = THREEx || {};
 
-THREEx.createGrassTufts = function (positions, scene) {
+THREEx.baseUrl = '';
+
+THREEx.createGrassTufts = function (positions, scene, texture, alphaTest, emissive) {
 
     let object3d, object3d2;
     const group = new THREE.Group();
@@ -22,21 +24,21 @@ THREEx.createGrassTufts = function (positions, scene) {
 //    });
 
     // load the texture
-    var textureUrl = THREEx.createGrassTufts.baseUrl + 'images/grass01.png';
+    //var textureUrl = THREEx.baseUrl + 'images/grass01.png';
 
-    var texture = textureLoader.load(textureUrl);
+    //var texture = textureLoader.load(textureUrl);
 
     // build the material
     var material = new THREE.MeshPhongMaterial({
         map: texture,
         color: 'grey',
-        emissive: 'darkgreen',
-        alphaTest: 0.7
+        emissive: emissive,
+        alphaTest: alphaTest
     });
 
     // create each tuft and merge their geometry for performance
     var mergedGeo = new THREE.Geometry();
-
+    console.log(positions.length)
     for (var i = 0; i < positions.length; i++) {
         var position = positions[i];
         var baseAngle = Math.PI * 2 * Math.random();
@@ -53,7 +55,6 @@ THREEx.createGrassTufts = function (positions, scene) {
             object3d.rotateY(angle);
             object3d.position.copy(position);
             object3d.updateMatrix();
-            group.add(object3d);
             mergedGeo.merge(object3d.geometry, object3d.matrix);
 
             // The other side of the plane
@@ -63,7 +64,6 @@ THREEx.createGrassTufts = function (positions, scene) {
             object3d2.rotateY(angle + Math.PI);
             object3d2.position.copy(position);
             object3d2.updateMatrix();
-            group.add(object3d2)
             mergedGeo.merge(object3d2.geometry, object3d2.matrix);
         }
     }
@@ -71,9 +71,9 @@ THREEx.createGrassTufts = function (positions, scene) {
     // create the mesh
     var mesh = new THREE.Mesh(mergedGeo, material);
     //group.geometry.groupsNeedUpdate = true;
-    return mesh;
+    scene.add(mesh);
 };
 
-THREEx.createGrassTufts.baseUrl = "../";
+THREEx.baseUrl = "../";
 
 
