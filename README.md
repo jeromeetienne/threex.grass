@@ -1,7 +1,8 @@
 Forked From https://github.com/jeromeetienne/threex.grass
 
-TODOs (For my fork)
-1.  Update to latest THREE and that stuff.
+TODOs
+1. Update to latest THREE
+2. Camera
 
 threex.grass
 ===================
