@@ -118,7 +118,7 @@ PlayerKeyControls = function (player, CONSTANTS, domElement, THREE) {
         }
         if (scope.player_action.strafeLeft) {
             player.position.z += Math.cos(player.rotation.y - Math.PI / 2) * CONSTANTS.PLAYER_MOVE_SPEED;
-            qplayer.position.x += Math.sin(player.rotation.y - Math.PI / 2) * CONSTANTS.PLAYER_MOVE_SPEED;
+            player.position.x += Math.sin(player.rotation.y - Math.PI / 2) * CONSTANTS.PLAYER_MOVE_SPEED;
         }
         if (scope.player_action.strafeRight) {
             player.position.z -= Math.cos(player.rotation.y - Math.PI / 2) * CONSTANTS.PLAYER_MOVE_SPEED;
