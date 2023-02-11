@@ -4,7 +4,7 @@ var THREEx = THREEx || {};
 
 THREEx.baseUrl = '';
 
-THREEx.createGrassTufts = function (positions, scene, texture, alphaTest, emissive) {
+THREEx.createGrassTufts = function (positions, scene, materialData) {
 
     let object3d, object3d2;
     const group = new THREE.Group();
@@ -23,18 +23,8 @@ THREEx.createGrassTufts = function (positions, scene, texture, alphaTest, emissi
 //        });
 //    });
 
-    // load the texture
-    //var textureUrl = THREEx.baseUrl + 'images/grass01.png';
-
-    //var texture = textureLoader.load(textureUrl);
-
     // build the material
-    var material = new THREE.MeshPhongMaterial({
-        map: texture,
-        color: 'grey',
-        emissive: emissive,
-        alphaTest: alphaTest
-    });
+    var material = new THREE.MeshPhongMaterial(materialData);
 
     // create each tuft and merge their geometry for performance
     var mergedGeo = new THREE.Geometry();
