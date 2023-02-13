@@ -26,8 +26,6 @@
     </style>
 </head>
 <body>
-
-
     <script>
         let textureLoader = new THREE.TextureLoader();
         let renderer = new THREE.WebGLRenderer({
@@ -48,25 +46,22 @@
         let PLAYER_KEY_CONTROLS = new CameraKeyControls(camera, document, THREE);
 
 
-        //////////////////////////////////////////////////////////////////////////////////
-        //		set 3 point lighting						//
-        //////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////
+        // LIGHTS				//
+        //////////////////////////////////////////
+        // add a ambient light
+        let light = new THREE.AmbientLight(0x020202);
+        scene.add(light);
 
-        (function () {
-            // add a ambient light
-            let light = new THREE.AmbientLight(0x020202);
-            scene.add(light);
+        // add a light in front
+        let light2 = new THREE.DirectionalLight('white', 1);
+        light2.position.set(0.5, 0.5, 2);
+        scene.add(light2);
 
-            // add a light in front
-            let light2 = new THREE.DirectionalLight('white', 1);
-            light2.position.set(0.5, 0.5, 2);
-            scene.add(light2);
-
-            // add a light behind
-            let light3 = new THREE.DirectionalLight('white', 0.75);
-            light3.position.set(-0.5, -0.5, -2);
-            scene.add(light3);
-        })();
+        // add a light behind
+        let light3 = new THREE.DirectionalLight('white', 0.75);
+        light3.position.set(-0.5, -0.5, -2);
+        scene.add(light3);
 
         // add a changing light
         let rovingLight = new THREE.DirectionalLight('white', 1);
@@ -106,13 +101,11 @@
         groundObject.rotateX(-Math.PI / 2);
         scene.add(groundObject);
 
-
         //////////////////////////
         // START GROWING THINGS	//
         //////////////////////////
 
         // GRASS TYPE 1
-
         let nTufts = 500;
         let positions = new Array(nTufts);
         for (let i = 0; i < nTufts; i++) {
@@ -216,7 +209,6 @@
             updateRovingLights(nowMsec / 1000);
             updateCameraPosition();
             renderFrame();
-
         });
     </script>
     <h3>Controls: W, A, S, D, Q, E, arrows and numpad -/+</h3>

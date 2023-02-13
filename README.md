@@ -1,8 +1,9 @@
-Forked From https://github.com/jeromeetienne/threex.grass
 
-TODOs
-1. Update to latest THREE
-2. Camera
+Update 13/2/2023
+1. Update to latest THREE r147 (last revision before forced module use)
+2. Camera controls added for easier looking around
+3. Organization mostly for readability
+4. geometry.merge (no longer available) replaced with group.add (easy peasy)
 
 threex.grass
 ===================
