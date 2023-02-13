@@ -2,6 +2,7 @@ CameraKeyControls = function (player, domElement, THREE) {
     var scope = this;
 
     this.PLAYER_MOVE_SPEED = 0.2;
+    this.PLAYER_LIFT_SPEED = 0.01;
     this.PLAYER_TURN_SPEED = 0.05;
 
     this.domElement = domElement !== undefined ? domElement : document;
@@ -100,10 +101,10 @@ CameraKeyControls = function (player, domElement, THREE) {
 
     this.updatePlayerPosition = function () {
         if (scope.player_action.moveUp) {
-            player.position.y += this.PLAYER_MOVE_SPEED;
+            player.position.y += this.PLAYER_LIFT_SPEED;
         }
         if (scope.player_action.moveDown) {
-            player.position.y -= this.PLAYER_MOVE_SPEED;
+            player.position.y -= this.PLAYER_LIFT_SPEED;
         }
         if (scope.player_action.moveForward) {
             player.position.z -= Math.cos(player.rotation.y) * this.PLAYER_MOVE_SPEED;

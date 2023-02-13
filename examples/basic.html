@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <head>
-    <title>ThreeX Demo</title>
+    <title>ThreeX Basic</title>
     <meta charset="UTF-8" />
     <link rel="shortcut icon" href="favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <script src="THREEs/Three r120/three.min.120.js"></script>
-    <script src="Constants.js"></script>
+    <script src="vendor/Three_r147/three.min.147.js"></script>
     <script src="CameraKeyControls.js"></script>
     <script src='../threex.grass.js'></script>
 
@@ -27,8 +26,6 @@
     </style>
 </head>
 <body>
-
-
     <script>
         let textureLoader = new THREE.TextureLoader();
         let renderer = new THREE.WebGLRenderer({
@@ -42,11 +39,11 @@
 
         let scene = new THREE.Scene();
         let camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000);
+        
         camera.position.y = 1.5;
         camera.position.z = 1;
-        let CONSTANTS = new SceneConstants(THREE);
-        let PLAYER_KEY_CONTROLS = new PlayerKeyControls(camera, CONSTANTS, document, THREE);
-
+        
+        let PLAYER_KEY_CONTROLS = new CameraKeyControls(camera, document, THREE);
 
         //////////////////////////////////////////////////////////////////////////////////
         //		set 3 point lighting						//
@@ -112,8 +109,7 @@
         //////////////////////////
 
         // GRASS TYPE 1
-
-        let nTufts = 3000;
+        let nTufts = 5000;
         let positions = new Array(nTufts);
         for (let i = 0; i < nTufts; i++) {
             let position = new THREE.Vector3();
