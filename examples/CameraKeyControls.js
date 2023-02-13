@@ -1,5 +1,8 @@
-PlayerKeyControls = function (player, CONSTANTS, domElement, THREE) {
+CameraKeyControls = function (player, domElement, THREE) {
     var scope = this;
+
+    this.PLAYER_MOVE_SPEED = 0.2;
+    this.PLAYER_TURN_SPEED = 0.05;
 
     this.domElement = domElement !== undefined ? domElement : document;
 
@@ -97,32 +100,32 @@ PlayerKeyControls = function (player, CONSTANTS, domElement, THREE) {
 
     this.updatePlayerPosition = function () {
         if (scope.player_action.moveUp) {
-            player.position.y += CONSTANTS.PLAYER_MOVE_SPEED;
+            player.position.y += this.PLAYER_MOVE_SPEED;
         }
         if (scope.player_action.moveDown) {
-            player.position.y -= CONSTANTS.PLAYER_MOVE_SPEED;
+            player.position.y -= this.PLAYER_MOVE_SPEED;
         }
         if (scope.player_action.moveForward) {
-            player.position.z -= Math.cos(player.rotation.y) * CONSTANTS.PLAYER_MOVE_SPEED;
-            player.position.x -= Math.sin(player.rotation.y) * CONSTANTS.PLAYER_MOVE_SPEED;
+            player.position.z -= Math.cos(player.rotation.y) * this.PLAYER_MOVE_SPEED;
+            player.position.x -= Math.sin(player.rotation.y) * this.PLAYER_MOVE_SPEED;
         }
         if (scope.player_action.moveBack) {
-            player.position.z += Math.cos(player.rotation.y) * CONSTANTS.PLAYER_MOVE_SPEED;
-            player.position.x += Math.sin(player.rotation.y) * CONSTANTS.PLAYER_MOVE_SPEED;
+            player.position.z += Math.cos(player.rotation.y) * this.PLAYER_MOVE_SPEED;
+            player.position.x += Math.sin(player.rotation.y) * this.PLAYER_MOVE_SPEED;
         }
         if (scope.player_action.turnLeft) {
-            player.rotation.y += CONSTANTS.PLAYER_TURN_SPEED;
+            player.rotation.y += this.PLAYER_TURN_SPEED;
         }
         if (scope.player_action.turnRight) {
-            player.rotation.y -= CONSTANTS.PLAYER_TURN_SPEED;
+            player.rotation.y -= this.PLAYER_TURN_SPEED;
         }
         if (scope.player_action.strafeLeft) {
-            player.position.z += Math.cos(player.rotation.y - Math.PI / 2) * CONSTANTS.PLAYER_MOVE_SPEED;
-            player.position.x += Math.sin(player.rotation.y - Math.PI / 2) * CONSTANTS.PLAYER_MOVE_SPEED;
+            player.position.z += Math.cos(player.rotation.y - Math.PI / 2) * this.PLAYER_MOVE_SPEED;
+            player.position.x += Math.sin(player.rotation.y - Math.PI / 2) * this.PLAYER_MOVE_SPEED;
         }
         if (scope.player_action.strafeRight) {
-            player.position.z -= Math.cos(player.rotation.y - Math.PI / 2) * CONSTANTS.PLAYER_MOVE_SPEED;
-            player.position.x -= Math.sin(player.rotation.y - Math.PI / 2) * CONSTANTS.PLAYER_MOVE_SPEED;
+            player.position.z -= Math.cos(player.rotation.y - Math.PI / 2) * this.PLAYER_MOVE_SPEED;
+            player.position.x -= Math.sin(player.rotation.y - Math.PI / 2) * this.PLAYER_MOVE_SPEED;
         }
         if (scope.player_action.lookUp) {
             //player.rotateX(0.02);
